@@ -1,0 +1,20 @@
+module(name = "test_video")
+
+bazel_dep(
+    name = "rules_rust",
+    version = "0.53.0",
+)
+
+rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+rust.toolchain(edition = "2021")
+use_repo(rust, "rust_toolchains")
+
+register_toolchains("@rust_toolchains//:all")
+
+crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
+crate.spec(
+    package = "opencv",
+    version = "0.93.3",
+)
+crate.from_specs()
+use_repo(crate, "crates")
